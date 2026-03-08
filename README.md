@@ -85,7 +85,7 @@ Le projet est segmenté en packages clairs. La logique métier est isolée dans 
 
 ### Installation locale
 1. Cloner le dépôt.
-2. Configurer la DB (H2 par défaut en local).
+2. Configurer la DB (H2 par défaut en local) et les variables d'environnement en copiant le fichier exemple : `cp .env.example .env`.
 3. Lancer : `./mvnw spring-boot:run`.
 4. Accéder au Swagger : `http://localhost:8080/swagger-ui/index.html`.
 
