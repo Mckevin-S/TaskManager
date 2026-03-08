@@ -14,75 +14,71 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
+  @Autowired private TaskRepository taskRepository;
 
-    @Override
-    public Page<TaskResponse> getAllTasks(User user, Pageable pageable) {
-        return taskRepository.findByUser(user, pageable)
-                .map(this::mapToResponse);
+  @Override
+  public Page<TaskResponse> getAllTasks(User user, Pageable pageable) {
+    return taskRepository.findByUser(user, pageable).map(this::mapToResponse);
+  }
+
+  @Override
+  public TaskResponse getTaskById(Long id, User user) {
+    Task task =
+        taskRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+    if (!task.getUser().getId().equals(user.getId())) {
+      throw new AccessDeniedException("You do not have permission to access this task");
     }
 
-    @Override
-    public TaskResponse getTaskById(Long id, User user) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+    return mapToResponse(task);
+  }
 
-        if (!task.getUser().getId().equals(user.getId())) {
-            throw new AccessDeniedException("You do not have permission to access this task");
-        }
+  @Override
+  public TaskResponse createTask(TaskRequest taskRequest, User user) {
+    Task task =
+        new Task(
+            taskRequest.getTitle(), taskRequest.getDescription(), taskRequest.getStatus(), user);
 
-        return mapToResponse(task);
+    Task savedTask = taskRepository.save(task);
+    return mapToResponse(savedTask);
+  }
+
+  @Override
+  public TaskResponse updateTask(Long id, TaskRequest taskRequest, User user) {
+    Task task =
+        taskRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+    if (!task.getUser().getId().equals(user.getId())) {
+      throw new AccessDeniedException("You do not have permission to update this task");
     }
 
-    @Override
-    public TaskResponse createTask(TaskRequest taskRequest, User user) {
-        Task task = new Task(
-                taskRequest.getTitle(),
-                taskRequest.getDescription(),
-                taskRequest.getStatus(),
-                user
-        );
+    task.setTitle(taskRequest.getTitle());
+    task.setDescription(taskRequest.getDescription());
+    task.setStatus(taskRequest.getStatus());
 
-        Task savedTask = taskRepository.save(task);
-        return mapToResponse(savedTask);
+    Task updatedTask = taskRepository.save(task);
+    return mapToResponse(updatedTask);
+  }
+
+  @Override
+  public void deleteTask(Long id, User user) {
+    Task task =
+        taskRepository
+            .findById(id)
+            .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+    if (!task.getUser().getId().equals(user.getId())) {
+      throw new AccessDeniedException("You do not have permission to delete this task");
     }
 
-    @Override
-    public TaskResponse updateTask(Long id, TaskRequest taskRequest, User user) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+    taskRepository.delete(task);
+  }
 
-        if (!task.getUser().getId().equals(user.getId())) {
-            throw new AccessDeniedException("You do not have permission to update this task");
-        }
-
-        task.setTitle(taskRequest.getTitle());
-        task.setDescription(taskRequest.getDescription());
-        task.setStatus(taskRequest.getStatus());
-
-        Task updatedTask = taskRepository.save(task);
-        return mapToResponse(updatedTask);
-    }
-
-    @Override
-    public void deleteTask(Long id, User user) {
-        Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
-
-        if (!task.getUser().getId().equals(user.getId())) {
-            throw new AccessDeniedException("You do not have permission to delete this task");
-        }
-
-        taskRepository.delete(task);
-    }
-
-    private TaskResponse mapToResponse(Task task) {
-        return new TaskResponse(
-                task.getId(),
-                task.getTitle(),
-                task.getDescription(),
-                task.getStatus()
-        );
-    }
+  private TaskResponse mapToResponse(Task task) {
+    return new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.getStatus());
+  }
 }

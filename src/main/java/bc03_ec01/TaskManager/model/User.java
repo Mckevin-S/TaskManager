@@ -8,31 +8,30 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users",
-       uniqueConstraints = {
-           @UniqueConstraint(columnNames = "username")
-       })
+@Table(
+    name = "users",
+    uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotBlank
-    @Size(max = 50)
-    private String username;
+  @NotBlank
+  @Size(max = 50)
+  private String username;
 
-    @NotBlank
-    @Size(max = 120)
-    private String password;
+  @NotBlank
+  @Size(max = 120)
+  private String password;
 
-    private String role; // Simple role for this project (e.g., ROLE_USER)
+  private String role; // Simple role for this project (e.g., ROLE_USER)
 
-    public User(String username, String password, String role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
+  public User(String username, String password, String role) {
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 }

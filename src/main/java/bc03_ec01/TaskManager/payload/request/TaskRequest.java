@@ -6,12 +6,11 @@ import lombok.Data;
 
 @Data
 public class TaskRequest {
-    @NotBlank
-    @Size(max = 100)
-    private String title;
+  @NotBlank
+  @Size(max = 100)
+  private String title;
 
-    private String description;
+  private String description;
 
-    @NotBlank
-    private String status;
+  @NotBlank private String status;
 }

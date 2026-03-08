@@ -13,28 +13,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @NotBlank
-    @Size(max = 100)
-    private String title;
+  @NotBlank
+  @Size(max = 100)
+  private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+  @Column(columnDefinition = "TEXT")
+  private String description;
 
-    @NotBlank
-    private String status; // TODO, IN_PROGRESS, DONE
+  @NotBlank private String status; // TODO, IN_PROGRESS, DONE
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    public Task(String title, String description, String status, User user) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.user = user;
-    }
+  public Task(String title, String description, String status, User user) {
+    this.title = title;
+    this.description = description;
+    this.status = status;
+    this.user = user;
+  }
 }
