@@ -4,8 +4,6 @@ Ce projet consiste en la mise en place d'un pipeline CI/CD complet pour une appl
 
 ## 1. Réponses aux Questions Techniques
 
-### PAGE 2 : Conception et Réalisation de l'API
-
 #### QUESTION 1 — CONCEPTION ARCHITECTURALE ET MODÉLISATION
 
 **1. Reformulation du besoin fonctionnel**
@@ -37,7 +35,6 @@ L'architecture suit les principes **SOLID** et le **Clean Code** :
 
 ---
 
-### PAGE 3 : Conception et Implémentation du Pipeline
 
 #### QUESTION 3 — CONCEPTION DU PIPELINE
 
@@ -59,7 +56,6 @@ L'architecture suit les principes **SOLID** et le **Clean Code** :
 
 ---
 
-### PAGE 4 : Sécurité, Déploiement et Optimisation
 
 #### QUESTION 5 — DÉPLOIEMENT AUTOMATIQUE
 Le déploiement est automatisé via GitHub Actions. L'image est buildée avec un tag spécifique (commit SHA), envoyée sur un registre, puis le serveur récupère la nouvelle image et relance `docker-compose up -d`.
@@ -76,7 +72,7 @@ Le projet est segmenté en packages clairs. La logique métier est isolée dans 
 **3. Guide d'exécution**
 - **Lancer l'API** : `./mvnw spring-boot:run`
 - **Tests** : `./mvnw test`
-- **Analyse Sonar** : Voir le [sonarqube_guide.md](./docs/sonarqube_guide.md).
+- **Analyse Sonar** : `./mvnw clean verify sonar:sonar -Dsonar.login=sqp_9aea125d9ae5af1987ad9d6bf536a3c7572799cb`
 
 ---
 

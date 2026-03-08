@@ -32,7 +32,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      run: mvn -B verify sonar:sonar -Dsonar.projectKey=bc03_ec01_TaskManager -Dsonar.host.url=https://sonarcloud.io
+      run: mvn -B verify sonar:sonar -Dsonar.projectKey=bc03_ec01_TaskManager -Dsonar.organization=bc03-ec01 -Dsonar.host.url=https://sonarcloud.io
 
   security-scans:
     runs-on: ubuntu-latest
