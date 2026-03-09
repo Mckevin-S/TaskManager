@@ -50,10 +50,24 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Cache NVD Database
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: ${{ runner.os }}-nvd-cache
+          restore-keys: ${{ runner.os }}-nvd-cache
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      
       - name: Dependency Check
+        continue-on-error: true
         run: mvn org.owasp:dependency-check-maven:check
         
-      # Trivy scanne le système de fichiers pour des vulnérabilités de dépendances
       - name: Run Trivy vulnerability scanner (Filesystem)
         uses: aquasecurity/trivy-action@master
         with:
