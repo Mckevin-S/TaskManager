@@ -21,6 +21,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
           
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+          
       - name: Lint with Spotless
         run: mvn spotless:check
         
@@ -30,12 +37,12 @@ jobs:
       - name: Run Unit Tests and Generate Coverage
         run: mvn -B test jacoco:report
 
-      - name: SonarCloud Scan (Maven)
+      - name: SonarCloud Scan
         # continue-on-error: true
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=TaskManager -Dsonar.organization=mckevin-s
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=TaskManager
 
   security-scans:
     runs-on: ubuntu-latest
