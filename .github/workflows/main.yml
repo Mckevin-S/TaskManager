@@ -32,7 +32,7 @@ jobs:
 
       - name: SonarCloud Scan (Maven)
         # continue-on-error: true
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=TaskManager -Dsonar.organization=mckevin-s-1
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=TaskManager -Dsonar.organization=mckevin-s
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
